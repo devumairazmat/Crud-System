@@ -2,6 +2,12 @@ import "./App.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 function App() {
+  function deleteRow(item) {
+    let index = dataArray.indexOf(item);
+    dataArray.splice(index, 1);
+    setDataArray([...dataArray]);
+  }
+
   const onSubmit = () => {
     console.log("submit");
     setDataArray([...dataArray, { fname: fname, lname: lname, mail: mail }]);
@@ -10,11 +16,12 @@ function App() {
     setMail("");
     console.log(dataArray);
   };
-  const [dataArray, setDataArray] = useState([]);
 
+  const [dataArray, setDataArray] = useState([]);
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [mail, setMail] = useState("");
+
   return (
     <div>
       <div className="container mt-4 ">
@@ -103,7 +110,10 @@ function App() {
                     <td>
                       <button className="btn btn-sm btn-primary  ">Edit</button>
                       <span></span>
-                      <button className="btn btn-sm  btn-primary  ">
+                      <button
+                        className="btn btn-sm  btn-danger"
+                        onClick={() => deleteRow(item)}
+                      >
                         Delete
                       </button>
                     </td>
