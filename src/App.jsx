@@ -2,19 +2,46 @@ import "./App.css";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 function App() {
-  const onSubmit = () => {
-    console.log("submit");
-    setDataArray([...dataArray, { fname: fname, lname: lname, mail: mail }]);
-    setFname("");
-    setLname("");
-    setMail("");
-    console.log(dataArray);
-  };
   const [dataArray, setDataArray] = useState([]);
-
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
   const [mail, setMail] = useState("");
+  const [buttonSwitch, setButtonSwitch] = useState(false);
+  const [arrayIndex, setArrayIndex] = useState(0);
+
+  function deleteRow(item) {
+    let index = dataArray.indexOf(item);
+    dataArray.splice(index, 1);
+    setDataArray([...dataArray]);
+  }
+  function updateRow(item) {
+    setFname(item.fname);
+    setLname(item.lname);
+    setMail(item.mail);
+    let index = dataArray.indexOf(item);
+    setButtonSwitch(true);
+    setArrayIndex(index);
+  }
+  const onSubmit = (e) => {
+    if (buttonSwitch) {
+      dataArray[arrayIndex].fname = fname;
+      dataArray[arrayIndex].lname = lname;
+      dataArray[arrayIndex].mail = mail;
+      setButtonSwitch(false);
+      setFname("");
+      setLname("");
+      setMail("");
+    } else {
+      console.log("submit");
+      setDataArray([...dataArray, { fname: fname, lname: lname, mail: mail }]);
+      setFname("");
+      setLname("");
+      setMail("");
+
+      console.log(dataArray);
+    }
+  };
+
   return (
     <div>
       <div className="container mt-4 ">
@@ -72,11 +99,12 @@ function App() {
           </div>
           <div className="col mt-4">
             <button
+              value={buttonSwitch}
               type="button"
               className="btn btn-primary"
-              onClick={onSubmit}
+              onClick={(e) => onSubmit(e)}
             >
-              Submit
+              {buttonSwitch ? "Update" : "Add"}
             </button>
           </div>
         </div>
@@ -101,9 +129,17 @@ function App() {
                     <td>{item.fname}</td> <td>{item.lname}</td>{" "}
                     <td>{item.mail}</td>
                     <td>
-                      <button className="btn btn-sm btn-primary  ">Edit</button>
+                      <button
+                        className="btn btn-sm btn-primary  "
+                        onClick={() => updateRow(item)}
+                      >
+                        Update
+                      </button>
                       <span></span>
-                      <button className="btn btn-sm  btn-primary  ">
+                      <button
+                        className="btn btn-sm  btn-danger"
+                        onClick={() => deleteRow(item)}
+                      >
                         Delete
                       </button>
                     </td>
