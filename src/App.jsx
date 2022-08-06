@@ -46,7 +46,7 @@ function App() {
     <div>
       <div className="container mt-4 ">
         <div className="row text-center">
-          <h4>CRUD SYSTEM</h4>
+          <h4>Simple CRUD SYSTEM</h4>
         </div>
         <div className="row mt-4">
           <div className="col">
